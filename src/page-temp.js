@@ -1,7 +1,9 @@
-const generatePage = (fullName, github) => {
+module.exports = templateData => {
+    //destructure page data by section, the '...' is the rest operator
+    const { projects, about, ...header } = templateData
     
     return `
-    <DOCTYPE hmtl>
+    <!DOCTYPE hmtl>
     <html lang="en">
     
     <head>
@@ -13,14 +15,25 @@ const generatePage = (fullName, github) => {
 
 
     <body>
-        <h1>${fullName}</h1>
+        <header>
+            <div class="container flex-row justify-space-between align-center py-3>
+                <h1 class="page-title text-secondary bg-dark py-2 px-3">${header.name}<h1>
+                <nav class="flex-row">
+                    <a class="ml-2 my-1 px-2 py-1 bg-secondary text-dark" href="https://github.com/${
+                        header.github
+                    }">GitHub</a>
+                </nav>
+            </div>
+        </header>
 
-        <h2>
-            <a href="https://github.com/${github}" target="_blank">Github</a>
-        </h2>
+        <main class="container my-5">
+        
+        </main>
+
+        <footer class="container text-center py-3">
+            <h3 class="text-dark">${new Date().getFullYear()} by ${header.name}</h3>
+        </footer>
     </body>
     </html>
     `;
 };
-
-module.exports = generatePage;
