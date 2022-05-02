@@ -140,12 +140,30 @@ promptUser()
     .then(promptProject)
     .then(portfolioData => { 
         const pageHTML = generatePage(portfolioData);
+        const distDir = './dist';
 
-        fs.writeFile('./index.html', pageHTML, err => {
-          if (err) throw err;
-
-          console.log('Portfolio complete! Check out index.html to see the output!');
+        //makes the dist directory
+        fs.mkdir(distDir, {recursive: true}, (err) => {
+            if (err) throw err
         });
 
-    });
+        //writes the HTML file inside dist directory
+        fs.writeFile('./dist/index.html', pageHTML, err => {
+          if (err) {
+              console.log(err)
+              return;
+          }
+          console.log('Page created! Check out index.html in this directory to see it!');
+
+          //copies style sheet
+          fs.copyFile('./src/style.css', './dist/style.css', err => {
+              if (err) {
+                  console.log(err);
+                  return;
+              }
+              console.log('Style sheet copied successfully!');
+          });
+        });  
+
+    }); 
   
