@@ -1,9 +1,13 @@
+//calls in the 'inquirer' package  
 const inquirer = require('inquirer')
+//call in fs module
 const fs = require('fs');
+//calls in function from page-temp.js
 const generatePage = require('./src/page-temp');
 
 const promptUser = () => {
 
+    
     return inquirer.prompt([
         { 
             type: 'input',
