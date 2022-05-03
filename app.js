@@ -1,7 +1,7 @@
 //calls in the 'inquirer' package  
 const inquirer = require('inquirer')
-//call in fs module
-const fs = require('fs');
+//calls in generate-site.js functions
+const {writeFile, copyFile, distDir} = require('./utils/generate-site')
 //calls in function from page-temp.js
 const generatePage = require('./src/page-temp');
 
@@ -139,31 +139,19 @@ Add a New Project
 promptUser()
     .then(promptProject)
     .then(portfolioData => { 
-        const pageHTML = generatePage(portfolioData);
-        const distDir = './dist';
-
-        //makes the dist directory
-        fs.mkdir(distDir, {recursive: true}, (err) => {
-            if (err) throw err
-        });
-
-        //writes the HTML file inside dist directory
-        fs.writeFile('./dist/index.html', pageHTML, err => {
-          if (err) {
-              console.log(err)
-              return;
-          }
-          console.log('Page created! Check out index.html in this directory to see it!');
-
-          //copies style sheet
-          fs.copyFile('./src/style.css', './dist/style.css', err => {
-              if (err) {
-                  console.log(err);
-                  return;
-              }
-              console.log('Style sheet copied successfully!');
-          });
-        });  
-
-    }); 
-  
+        distDir()
+        return generatePage(portfolioData)
+    })
+    .then(pageHTML => {
+        return writeFile(pageHTML)
+    })
+    .then(writeFileResponse => {
+        console.log(writeFileResponse)
+        return copyFile()
+    })
+    .then(copyFileResponse => {
+        console.log(copyFileResponse)
+    })
+    .catch(err => {
+        console.log(err)
+    })
